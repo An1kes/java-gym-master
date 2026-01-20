@@ -4,17 +4,40 @@ import java.util.*;
 
 public class Timetable {
 
-    private /* как это хранить??? */ timetable;
+    private Map<DayOfWeek, Map<TimeOfDay, TrainingSession>> timetable = new HashMap<>();
 
     public void addNewTrainingSession(TrainingSession trainingSession) {
-        //сохраняем занятие в расписании
+        if (! timetable.containsKey(trainingSession.getDayOfWeek())) {
+            Map<TimeOfDay, TrainingSession> dayTraining = new TreeMap<>();
+            dayTraining.put(trainingSession.getTimeOfDay(), trainingSession);
+            timetable.put(trainingSession.getDayOfWeek(), dayTraining);
+        } else {
+            Map<TimeOfDay, TrainingSession> dayTraining = timetable.get(trainingSession.getDayOfWeek());
+            dayTraining.put(trainingSession.getTimeOfDay(), trainingSession);
+        }
     }
 
-    public /* непонятно, что возвращать */ getTrainingSessionsForDay(DayOfWeek dayOfWeek) {
-        //как реализовать, тоже непонятно, но сложность должна быть О(1)
+    public Map<TimeOfDay, TrainingSession> getTrainingSessionsForDay(DayOfWeek dayOfWeek) {
+        return timetable.get(dayOfWeek);
     }
 
-    public /* непонятно, что возвращать */ getTrainingSessionsForDayAndTime(DayOfWeek dayOfWeek, TimeOfDay timeOfDay) {
-        //как реализовать, тоже непонятно, но сложность должна быть О(1)
+    public TrainingSession getTrainingSessionsForDayAndTime(DayOfWeek dayOfWeek, TimeOfDay timeOfDay) {
+        return timetable.get(dayOfWeek).get(timeOfDay);
+    }
+
+    public List<CounterOfTrainings> getCountByCoaches() {
+        Map<Coach, Integer> coachTreningCount = new HashMap<>();
+        for (DayOfWeek day : timetable.keySet()) {
+            for (TimeOfDay time : timetable.get(day).keySet()) {
+                TrainingSession training = timetable.get(day).get(time);
+                coachTreningCount.put(training.getCoach(), coachTreningCount.getOrDefault(training.getCoach(), 0) + 1);
+            }
+        }
+        List<CounterOfTrainings> counterList = new ArrayList<>();
+        for (Map.Entry<Coach, Integer> entry : coachTreningCount.entrySet()) {
+            counterList.add(new CounterOfTrainings(entry.getKey(), entry.getValue()));
+        }
+        Collections.sort(counterList);
+        return counterList;
     }
 }
