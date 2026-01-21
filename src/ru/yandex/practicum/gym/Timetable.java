@@ -18,11 +18,19 @@ public class Timetable {
     }
 
     public Map<TimeOfDay, TrainingSession> getTrainingSessionsForDay(DayOfWeek dayOfWeek) {
-        return timetable.get(dayOfWeek);
+        Map<TimeOfDay, TrainingSession> dayTraining = timetable.get(dayOfWeek);
+        if (dayTraining == null) {
+            return new HashMap<>();
+        }
+        return dayTraining;
     }
 
     public TrainingSession getTrainingSessionsForDayAndTime(DayOfWeek dayOfWeek, TimeOfDay timeOfDay) {
-        return timetable.get(dayOfWeek).get(timeOfDay);
+        Map<TimeOfDay, TrainingSession> dayTraining = timetable.get(dayOfWeek);
+        if (dayTraining == null) {
+            return null;
+        }
+        return dayTraining.get(timeOfDay);
     }
 
     public List<CounterOfTrainings> getCountByCoaches() {

@@ -1,13 +1,14 @@
 package ru.yandex.practicum.gym;
 
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.Test;
+
 
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-import java.lang.reflect.AnnotatedArrayType;
+
 import java.util.*;
 
 
@@ -26,7 +27,7 @@ public class TimetableTest {
 
 
         assertEquals(1, timetable.getTrainingSessionsForDay(DayOfWeek.MONDAY).size(), "Количество тренировок не совпадает");
-        assertNull(timetable.getTrainingSessionsForDay(DayOfWeek.TUESDAY));
+        assertEquals(0,timetable.getTrainingSessionsForDay(DayOfWeek.TUESDAY).size(),"Количество тренировок не совпадает");
     }
 
     @Test
@@ -54,7 +55,7 @@ public class TimetableTest {
         timetable.addNewTrainingSession(saturdayChildTrainingSession);
 
         assertEquals(1, timetable.getTrainingSessionsForDay(DayOfWeek.MONDAY).size(), "Количество тренировок не совпадает");
-        assertNull(timetable.getTrainingSessionsForDay(DayOfWeek.TUESDAY));
+        assertEquals(0,timetable.getTrainingSessionsForDay(DayOfWeek.TUESDAY).size(),"Количество тренировок не совпадает");
 
         List<TimeOfDay> times = new ArrayList<>(timetable.getTrainingSessionsForDay(DayOfWeek.THURSDAY).keySet());
 
